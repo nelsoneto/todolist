@@ -11,12 +11,25 @@ import { ITask } from "./interfaces/Task";
 
 // CSS
 import styles from "./App.module.css";
+import Modal from "./components/Modal";
+import { channel } from "diagnostics_channel";
 
 function App() {
   const [taskList, setTaskList] = useState<ITask[]>([]);
 
+  const deleteTask = (id: number) => {
+    setTaskList(
+      taskList.filter((task) => {
+        return task.id !== id;
+      })
+    );
+  };
+
   return (
     <div>
+      <Modal
+        children={<TaskForm btnText="Editar Tarefa" taskList={taskList} />}
+      />
       <Header />
       <main className={styles.main}>
         <h2>Adicionar Tarefas:</h2>
@@ -26,7 +39,7 @@ function App() {
           setTaskList={setTaskList}
         />
         <h2>Tarefas adicionadas:</h2>
-        <TaskList taskList={taskList} />
+        <TaskList taskList={taskList} handleDelete={deleteTask} />
       </main>
       <Footer />
     </div>
